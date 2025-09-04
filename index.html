@@ -1,169 +1,334 @@
-# dlalastn
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>자리배치 프로그램 따흐앙!</title>
-  <style>
-    body { background: #f8f9fa; font-family: '맑은 고딕', sans-serif; }
-    .classroom {
-      display: grid;
-      grid-template-rows: 60px 40px repeat(5, 60px);
-      grid-template-columns: repeat(5, 80px);
-      gap: 8px;
-      justify-content: center;
-      margin-top: 40px;
+ㅑs.length-1; j>=0; j--) {
+          if(checkCollision(milk, girls[j])) {
+            milk.remove();
+            milkShots.splice(i,1);
+            girls[j].dataset.hit++;
+            if(girls[j].dataset.hit >= 2) {
+              girls[j].remove();
+              girls.splice(j,1);
+              score++;
+              updateUI();
+              if(score % 3 === 0 && life < 5) {
+                life++;
+                updateUI();
+              }
+              checkStageClear();
+            }
+            break;
+          }
+        }
+        // 보스 맞추기
+        if(bossActive && checkCollision(milk, document.getElementById('boss'))) {
+          milk.remove();
+          milkShots.splice(i,1);
+          bossHealth--;
+          updateBossHealth();
+          if(bossHealth <= 0) {
+            bossDefeated();
+          }
+        }
+        if(top < 0) {
+            girl.innerHTML = `
+              <svg viewBox="0 0 120 160">
+                <!-- 머리 -->
+                <ellipse cx="60" cy="36" rx="28" ry="24" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="3"/>
+                <!-- 머리카락 -->
+                <ellipse cx="60" cy="32" rx="34" ry="26" fill="#f8b0d8" opacity="0.7"/>
+                <!-- 얼굴(눈, 입) -->
+                <ellipse cx="48" cy="44" rx="4" ry="6" fill="#333"/>
+                <ellipse cx="72" cy="44" rx="4" ry="6" fill="#333"/>
+                <path d="M54 56 Q60 62 66 56" stroke="#e08080" stroke-width="3" fill="none"/>
+                <!-- 몸통 -->
+                <rect x="44" y="68" width="32" height="44" rx="16" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="3"/>
+                <!-- 비키니 상의 (흉부 절반만 가림) -->
+                <rect x="44" y="68" width="32" height="16" rx="16" fill="#1976d2" stroke="#0d47a1" stroke-width="3"/>
+                <!-- 흉부 노출 강조 -->
+                <ellipse cx="60" cy="90" rx="14" ry="10" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="2"/>
+                <!-- 허리/엉덩이 강조 (크기 확대) -->
+                <ellipse cx="70" cy="140" rx="34" ry="22" fill="#1976d2" stroke="#0d47a1" stroke-width="4"/>
+                <!-- 허벅지 강조 -->
+                <ellipse cx="58" cy="155" rx="12" ry="18" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="4"/>
+                <ellipse cx="82" cy="155" rx="12" ry="18" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="4"/>
+                <!-- 다리 -->
+                <rect x="54" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+                <rect x="76" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+              </svg>
+            `;
+            <path d="M54 56 Q60 62 66 56" stroke="#e08080" stroke-width="3" fill="none"/>
+            <!-- 찢어진 옷 몸통 -->
+            <rect x="38" y="68" width="44" height="44" rx="22" fill="#fff" stroke="#d8a0a0" stroke-width="3"/>
+            <path d="M38 90 Q60 100 82 90" stroke="#222" stroke-width="3" fill="none"/>
+            <rect x="50" y="80" width="20" height="12" rx="6" fill="#ffe0e0"/>
+            <!-- 돌핀팬츠 -->
+            <rect x="44" y="112" width="32" height="18" rx="9" fill="#1976d2" stroke="#0d47a1" stroke-width="3"/>
+            <ellipse cx="60" cy="130" rx="16" ry="8" fill="#1976d2" stroke="#0d47a1" stroke-width="2"/>
+            <!-- 허리/엉덩이 -->
+            <ellipse cx="70" cy="140" rx="28" ry="18" fill="#1976d2" stroke="#0d47a1" stroke-width="4"/>
+            <!-- 허벅지 강조 -->
+            <ellipse cx="58" cy="155" rx="10" ry="16" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="4"/>
+            <ellipse cx="82" cy="155" rx="10" ry="16" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="4"/>
+            <!-- 다리 -->
+            <rect x="54" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+            <rect x="76" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+          </svg>
+          <div>보스${stage}</div>
+        `;
+      } else if(stage === 2) {
+        document.getElementById('boss').innerHTML = `
+          <svg viewBox="0 0 120 160">
+            <!-- 머리 -->
+            <ellipse cx="60" cy="36" rx="28" ry="24" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="3"/>
+            <!-- 머리카락 -->
+            <ellipse cx="60" cy="32" rx="34" ry="26" fill="#f8b0d8" opacity="0.7"/>
+            <!-- 얼굴(눈, 입) -->
+            <ellipse cx="48" cy="44" rx="4" ry="6" fill="#333"/>
+            <ellipse cx="72" cy="44" rx="4" ry="6" fill="#333"/>
+            <path d="M54 56 Q60 62 66 56" stroke="#e08080" stroke-width="3" fill="none"/>
+            <!-- 슬링샷 비키니 -->
+            <rect x="56" y="68" width="8" height="44" rx="4" fill="#1976d2" stroke="#0d47a1" stroke-width="3"/>
+            <rect x="50" y="112" width="20" height="18" rx="10" fill="#1976d2" stroke="#0d47a1" stroke-width="3"/>
+            <path d="M60 68 Q50 90 60 112 Q70 90 60 68" stroke="#1976d2" stroke-width="6" fill="none"/>
+            <!-- 가슴 강조 (크기 확대) -->
+            <ellipse cx="60" cy="112" rx="28" ry="20" fill="#ffb6c1" stroke="#d8006b" stroke-width="7"/>
+            <ellipse cx="60" cy="112" rx="18" ry="13" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="2"/>
+            <ellipse cx="60" cy="124" rx="10" ry="5" fill="#fff" opacity="0.5"/>
+            <!-- 허리/엉덩이 -->
+            <ellipse cx="70" cy="140" rx="28" ry="18" fill="#1976d2" stroke="#0d47a1" stroke-width="4"/>
+            <!-- 허벅지 강조 -->
+            <ellipse cx="58" cy="155" rx="10" ry="16" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="4"/>
+            <ellipse cx="82" cy="155" rx="10" ry="16" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="4"/>
+            <!-- 다리 -->
+            <rect x="54" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+            <rect x="76" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+          </svg>
+          <div>보스${stage}</div>
+        `;
+      } else if(stage === 3) {
+        document.getElementById('boss').innerHTML = `
+          <svg viewBox="0 0 120 160">
+            <!-- 머리 -->
+            <ellipse cx="60" cy="36" rx="28" ry="24" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="3"/>
+            <!-- 머리카락 -->
+            <ellipse cx="60" cy="32" rx="34" ry="26" fill="#f8b0d8" opacity="0.7"/>
+            <!-- 얼굴(눈, 입) -->
+            <ellipse cx="48" cy="44" rx="4" ry="6" fill="#333"/>
+            <ellipse cx="72" cy="44" rx="4" ry="6" fill="#333"/>
+            <path d="M54 56 Q60 62 66 56" stroke="#e08080" stroke-width="3" fill="none"/>
+            <!-- 파란 드레스 몸통 -->
+            <rect x="38" y="68" width="44" height="44" rx="22" fill="#3b82f6" stroke="#1e40af" stroke-width="3"/>
+            <!-- 드레스 치마 -->
+            <ellipse cx="60" cy="130" rx="32" ry="22" fill="#60a5fa" stroke="#1e40af" stroke-width="4"/>
+            <!-- 허리/엉덩이 -->
+            <ellipse cx="70" cy="140" rx="28" ry="18" fill="#60a5fa" stroke="#1e40af" stroke-width="4"/>
+            <!-- 다리 -->
+            <rect x="54" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+            <rect x="76" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+          </svg>
+          <div>보스${stage}</div>
+        `;
+      } else {
+        document.getElementById('boss').innerHTML = `
+          <svg viewBox="0 0 120 160">
+            <!-- 머리 -->
+            <ellipse cx="60" cy="36" rx="28" ry="24" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="3"/>
+            <!-- 머리카락 -->
+            <ellipse cx="60" cy="32" rx="34" ry="26" fill="#f8b0d8" opacity="0.7"/>
+            <!-- 얼굴(눈, 입) -->
+            <ellipse cx="48" cy="44" rx="4" ry="6" fill="#333"/>
+            <ellipse cx="72" cy="44" rx="4" ry="6" fill="#333"/>
+            <path d="M54 56 Q60 62 66 56" stroke="#e08080" stroke-width="3" fill="none"/>
+            <!-- 몸통 -->
+            <rect x="38" y="68" width="44" height="44" rx="22" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="3"/>
+            <!-- 가슴 강조 -->
+            <ellipse cx="52" cy="110" rx="18" ry="14" fill="#ffb6c1" stroke="#d8006b" stroke-width="5"/>
+            <ellipse cx="88" cy="110" rx="18" ry="14" fill="#ffb6c1" stroke="#d8006b" stroke-width="5"/>
+            <ellipse cx="52" cy="110" rx="12" ry="8" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="2"/>
+            <ellipse cx="88" cy="110" rx="12" ry="8" fill="#ffe0e0" stroke="#d8a0a0" stroke-width="2"/>
+            <!-- 허리/엉덩이 -->
+            <ellipse cx="70" cy="140" rx="28" ry="18" fill="#ff69b4" stroke="#d8006b" stroke-width="4"/>
+            <!-- 다리 -->
+            <rect x="54" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+            <rect x="76" y="150" width="10" height="18" rx="5" fill="#ffe0e0"/>
+          </svg>
+          <div>보스${stage}</div>
+        `;
+      }
     }
-    .chalkboard {
-      grid-row: 1;
-      grid-column: 1 / span 5;
-      background: #333;
-      color: #fff;
-      text-align: center;
-      line-height: 60px;
-      font-size: 1.3em;
-      border-radius: 8px;
-    }
-    .teacher {
-      grid-row: 2;
-      grid-column: 3;
-      background: #ffe082;
-      text-align: center;
-      line-height: 40px;
-      font-weight: bold;
-      border-radius: 8px;
-      border: 2px solid #ffb300;
-    }
-    .fav {
-      grid-row: 2;
-      background: #b3e5fc;
-      text-align: center;
-      line-height: 40px;
-      font-weight: bold;
-      border-radius: 8px;
-      border: 2px solid #0288d1;
-    }
-    .fav.left { grid-column: 2; }
-    .fav.right { grid-column: 4; }
-    .fav.extra { grid-column: 1 / span 1; visibility: hidden; }
-    .fav.extra2 { grid-column: 5 / span 1; visibility: hidden; }
-    .desk {
-      background: #fff;
-      border: 1px solid #bbb;
-      border-radius: 8px;
-      text-align: center;
-      line-height: 60px;
-      font-size: 1em;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-      transition: background 0.3s;
-    }
-    .controls {
-      margin: 30px auto 10px auto;
-      text-align: center;
-    }
-    button {
-      padding: 10px 24px;
-      margin: 0 10px;
-      background: #0288d1;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    button:hover { background: #01579b; }
-    .message {
-      text-align: center;
-      font-size: 1.2em;
-      margin-top: 18px;
-      min-height: 32px;
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-    .message.show {
-      opacity: 1;
-      animation: bounce 1s;
-    }
-    @keyframes bounce {
-      0% { transform: scale(1); }
-      30% { transform: scale(1.2); }
-      60% { transform: scale(0.95); }
-      100% { transform: scale(1); }
-    }
-  </style>
-</head>
-<body>
-  <h1>자지배치 프로그램 따흐앙!</h1>
-  <div class="controls">
-    <button id="shuffleBtn">자리바꿈 따흐앙!</button>
-    <button id="resetBtn">리셋 따흐앙!</button>
-  </div>
-  <div class="message" id="msg"></div>
-  <div class="classroom" id="classroom">
-    <div class="chalkboard">칠판 & 교탁 따흐앙!</div>
-    <div class="fav extra"></div>
-    <div class="fav left">애제자 따흐앙!</div>
-    <div class="teacher">선생님 따흐앙!</div>
-    <div class="fav right">애제자 따흐앙!</div>
-    <div class="fav extra2"></div>
-    <!-- 학생 자리 5x5 -->
-  </div>
-  <script>
-    // 초기 자리 배열
-    const students = [
-      "1번 따흐앙!", "2번 따흐앙!", "3번 따흐앙!", "4번 따흐앙!", "5번 따흐앙!",
-      "6번 따흐앙!", "7번 따흐앙!", "8번 따흐앙!", "9번 따흐앙!", "10번 따흐앙!",
-      "11번 따흐앙!", "12번 따흐앙!", "13번 따흐앙!", "14번 따흐앙!", "15번 따흐앙!",
-      "16번 따흐앙!", "17번 따흐앙!", "18번 따흐앙!", "19번 따흐앙!", "20번 따흐앙!",
-      "21번 따흐앙!", "22번 따흐앙!", "23번 따흐앙!", "24번 따흐앙!", "25번 따흐앙!"
-    ];
-    let currentSeats = [...students];
 
-    function renderDesks(arr) {
-      const classroom = document.getElementById('classroom');
-      // 기존 학생 자리 제거
-      document.querySelectorAll('.desk').forEach(e => e.remove());
-      // 5행 5열로 자리 배치
-      let idx = 0;
-      for(let row=0; row<5; row++) {
-        for(let col=0; col<5; col++) {
-          const desk = document.createElement('div');
-          desk.className = 'desk';
-          desk.style.gridRow = (row+3);
-          desk.style.gridColumn = (col+1);
-          desk.textContent = arr[idx++];
-          classroom.appendChild(desk);
+    // 보스 체력바
+    function updateBossHealth() {
+      let percent = (bossHealth / bossHealthMax) * 100;
+      document.getElementById('bossHealthBar').style.width = percent + '%';
+    }
+
+    // 보스 우유 발사
+    function bossShootMilk() {
+      if(!bossActive) return;
+      let milk = document.createElement('div');
+      milk.className = 'milk';
+      milk.style.left = (400 + Math.random()*60 - 30) + 'px';
+      milk.style.top = '200px';
+      milk.style.background = '#0ff';
+      document.getElementById('gameArea').appendChild(milk);
+      bossMilkShots.push(milk);
+    }
+
+    // 보스 우유 움직임
+    function moveBossMilk() {
+      for(let i=bossMilkShots.length-1; i>=0; i--) {
+        let milk = bossMilkShots[i];
+        let top = parseFloat(milk.style.top);
+        top += 8;
+        milk.style.top = top + 'px';
+        if(checkCollision(milk, document.getElementById('player'))) {
+          life--;
+          updateUI();
+          milk.remove();
+          bossMilkShots.splice(i,1);
+          if(life <= 0) gameOver();
+        }
+        if(top > 600) {
+          milk.remove();
+          bossMilkShots.splice(i,1);
         }
       }
     }
 
-    function showMsg(text) {
-      const msg = document.getElementById('msg');
-      msg.textContent = text;
-      msg.classList.add('show');
-      setTimeout(() => msg.classList.remove('show'), 1200);
+    // 충돌 체크
+    function checkCollision(a, b) {
+      let ar = a.getBoundingClientRect();
+      let br = b.getBoundingClientRect();
+      return !(ar.right < br.left || ar.left > br.right || ar.bottom < br.top || ar.top > br.bottom);
     }
 
-    document.getElementById('shuffleBtn').onclick = function() {
-      // 자리 섞기
-      for(let i=currentSeats.length-1; i>0; i--) {
-        const j = Math.floor(Math.random() * (i+1));
-        [currentSeats[i], currentSeats[j]] = [currentSeats[j], currentSeats[i]];
+    // 스테이지 클리어 체크
+    function checkStageClear() {
+      if(score >= stageGirlCounts[stage-1]) {
+        showStageMsg(`경고! 보스 등장!`);
+        setTimeout(() => {
+          hideStageMsg();
+          spawnBoss();
+        }, 2000);
       }
-      renderDesks(currentSeats);
-      showMsg('자리를바꾸고있습니당! 따흐앙!');
-    };
+    }
 
-    document.getElementById('resetBtn').onclick = function() {
-      currentSeats = [...students];
-      renderDesks(currentSeats);
-      showMsg('히잉.. 따흐앙!');
-    };
+    // 보스 처치
+    function bossDefeated() {
+      showStageMsg(`보스 처치!`);
+      setTimeout(() => {
+        hideStageMsg();
+        document.getElementById('boss').style.display = 'none';
+        document.getElementById('bossHealth').style.display = 'none';
+        bossActive = false;
+        bossStage = false;
+        nextStage();
+      }, 2000);
+    }
 
-    // 최초 자리 배치
-    renderDesks(currentSeats);
+    // 다음 스테이지
+    function nextStage() {
+      stage++;
+      if(stage > 4) {
+        showStageMsg(`게임 클리어!`);
+        setTimeout(() => {
+          goLobby();
+        }, 3000);
+      } else {
+        score = 0;
+        setBackground();
+        updateUI();
+      }
+    }
+
+    // 게임 오버
+    function gameOver() {
+      showStageMsg('게임 오버!');
+      clearInterval(gameInterval);
+      setTimeout(() => {
+        goLobby();
+      }, 3000);
+    }
+
+    // 스테이지 메시지
+    function showStageMsg(msg) {
+      let el = document.getElementById('stageMsg');
+      el.innerText = msg;
+      el.style.display = 'block';
+    }
+    function hideStageMsg() {
+      document.getElementById('stageMsg').style.display = 'none';
+    }
+
+    // 게임 루프
+    function gameLoop() {
+      if(paused) return;
+      if(!bossActive && Math.random() < 0.03) spawnGirl();
+      moveGirls();
+      moveMilk();
+      if(bossActive && Math.random() < 0.04) bossShootMilk();
+      moveBossMilk();
+    }
+
+    // 게임 시작
+    function startGame() {
+      setBackground();
+      updateUI();
+      gameInterval = setInterval(gameLoop, 30);
+    }
+
+    // 일시정지/재개/로비
+    function pauseGame() { paused = true; }
+    function resumeGame() { paused = false; }
+    function goLobby() {
+      location.reload();
+    }
+
+    // 시작
+    startGame();
+  </script>
+</body>
+ㅑ);
+      setTimeout(() => {
+        goLobby();
+      }, 3000);
+    }
+
+    // 스테이지 메시지
+    function showStageMsg(msg) {
+      let el = document.getElementById('stageMsg');
+      el.innerText = msg;
+      el.style.display = 'block';
+    }
+    function hideStageMsg() {
+      document.getElementById('stageMsg').style.display = 'none';
+    }
+
+    // 게임 루프
+    function gameLoop() {
+      if(paused) return;
+      if(!bossActive && Math.random() < 0.03) spawnGirl();
+      moveGirls();
+      moveMilk();
+      if(bossActive && Math.random() < 0.04) bossShootMilk();
+      moveBossMilk();
+    }
+
+    // 게임 시작
+    function startGame() {
+      setBackground();
+      updateUI();
+      gameInterval = setInterval(gameLoop, 30);
+    }
+
+    // 일시정지/재개/로비
+    function pauseGame() { paused = true; }
+    function resumeGame() { paused = false; }
+    function goLobby() {
+      location.reload();
+    }
+
+    // 시작
+    startGame();
   </script>
 </body>
 </html>
-<!-- 따흐앙!
