@@ -1,0 +1,169 @@
+# dlalastn
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>자리배치 프로그램 따흐앙!</title>
+  <style>
+    body { background: #f8f9fa; font-family: '맑은 고딕', sans-serif; }
+    .classroom {
+      display: grid;
+      grid-template-rows: 60px 40px repeat(5, 60px);
+      grid-template-columns: repeat(5, 80px);
+      gap: 8px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+    .chalkboard {
+      grid-row: 1;
+      grid-column: 1 / span 5;
+      background: #333;
+      color: #fff;
+      text-align: center;
+      line-height: 60px;
+      font-size: 1.3em;
+      border-radius: 8px;
+    }
+    .teacher {
+      grid-row: 2;
+      grid-column: 3;
+      background: #ffe082;
+      text-align: center;
+      line-height: 40px;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 2px solid #ffb300;
+    }
+    .fav {
+      grid-row: 2;
+      background: #b3e5fc;
+      text-align: center;
+      line-height: 40px;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 2px solid #0288d1;
+    }
+    .fav.left { grid-column: 2; }
+    .fav.right { grid-column: 4; }
+    .fav.extra { grid-column: 1 / span 1; visibility: hidden; }
+    .fav.extra2 { grid-column: 5 / span 1; visibility: hidden; }
+    .desk {
+      background: #fff;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 60px;
+      font-size: 1em;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      transition: background 0.3s;
+    }
+    .controls {
+      margin: 30px auto 10px auto;
+      text-align: center;
+    }
+    button {
+      padding: 10px 24px;
+      margin: 0 10px;
+      background: #0288d1;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #01579b; }
+    .message {
+      text-align: center;
+      font-size: 1.2em;
+      margin-top: 18px;
+      min-height: 32px;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .message.show {
+      opacity: 1;
+      animation: bounce 1s;
+    }
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.2); }
+      60% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>자지배치 프로그램 따흐앙!</h1>
+  <div class="controls">
+    <button id="shuffleBtn">자지바꿈 따흐앙!</button>
+    <button id="resetBtn">리셋 따흐앙!</button>
+  </div>
+  <div class="message" id="msg"></div>
+  <div class="classroom" id="classroom">
+    <div class="chalkboard">칠판 & 교탁 따흐앙!</div>
+    <div class="fav extra"></div>
+    <div class="fav left">애제자 따흐앙!</div>
+    <div class="teacher">선생님 따흐앙!</div>
+    <div class="fav right">애제자 따흐앙!</div>
+    <div class="fav extra2"></div>
+    <!-- 학생 자리 5x5 -->
+  </div>
+  <script>
+    // 초기 자리 배열
+    const students = [
+      "1번 따흐앙!", "2번 따흐앙!", "3번 따흐앙!", "4번 따흐앙!", "5번 따흐앙!",
+      "6번 따흐앙!", "7번 따흐앙!", "8번 따흐앙!", "9번 따흐앙!", "10번 따흐앙!",
+      "11번 따흐앙!", "12번 따흐앙!", "13번 따흐앙!", "14번 따흐앙!", "15번 따흐앙!",
+      "16번 따흐앙!", "17번 따흐앙!", "18번 따흐앙!", "19번 따흐앙!", "20번 따흐앙!",
+      "21번 따흐앙!", "22번 따흐앙!", "23번 따흐앙!", "24번 따흐앙!", "25번 따흐앙!"
+    ];
+    let currentSeats = [...students];
+
+    function renderDesks(arr) {
+      const classroom = document.getElementById('classroom');
+      // 기존 학생 자리 제거
+      document.querySelectorAll('.desk').forEach(e => e.remove());
+      // 5행 5열로 자리 배치
+      let idx = 0;
+      for(let row=0; row<5; row++) {
+        for(let col=0; col<5; col++) {
+          const desk = document.createElement('div');
+          desk.className = 'desk';
+          desk.style.gridRow = (row+3);
+          desk.style.gridColumn = (col+1);
+          desk.textContent = arr[idx++];
+          classroom.appendChild(desk);
+        }
+      }
+    }
+
+    function showMsg(text) {
+      const msg = document.getElementById('msg');
+      msg.textContent = text;
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 1200);
+    }
+
+    document.getElementById('shuffleBtn').onclick = function() {
+      // 자리 섞기
+      for(let i=currentSeats.length-1; i>0; i--) {
+        const j = Math.floor(Math.random() * (i+1));
+        [currentSeats[i], currentSeats[j]] = [currentSeats[j], currentSeats[i]];
+      }
+      renderDesks(currentSeats);
+      showMsg('자리를바꾸고있습니당! 따흐앙!');
+    };
+
+    document.getElementById('resetBtn').onclick = function() {
+      currentSeats = [...students];
+      renderDesks(currentSeats);
+      showMsg('히잉.. 따흐앙!');
+    };
+
+    // 최초 자리 배치
+    renderDesks(currentSeats);
+  </script>
+</body>
+</html>
+<!-- 따흐앙!
